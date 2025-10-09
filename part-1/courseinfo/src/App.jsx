@@ -1,31 +1,34 @@
-import Header from "./Header.jsx";
-import Content from "./Content.jsx";
-import Total from "./Total.jsx";
+import { useState } from "react";
+import Display from "./Display";
+import Button from "./Button";
 
 const App = () => {
-  const course = "Half Stack application development";
-  const part1 = "Fundamentals of React";
-  const exercises1 = 10;
-  const part2 = "Using props to pass data";
-  const exercises2 = 7;
-  const part3 = "State of a component";
-  const exercises3 = 14;
+  const [counter, setCounter] = useState(0);
+
+  console.log("rendering with counter value", counter);
+
+  const increaseByOne = () => {
+    console.log("increasing, value before", counter);
+    setCounter(counter + 1);
+  };
+
+  const decreaseByOne = () => {
+    console.log("decreasing, value before", counter);
+    setCounter(counter - 1);
+  };
+
+  const setToZero = () => {
+    console.log("resetting to zero, value before", counter);
+    setCounter(0);
+  };
 
   return (
     <div>
-      <Header course={course} />
-      <Content
-        parte1={part1}
-        parte2={part2}
-        parte3={part3}
-        ejercicios1={exercises1}
-        ejercicios2={exercises2}
-        ejercicios3={exercises3}
-      />
-
-      <Total total={exercises1 + exercises2 + exercises3} />
+      <Display counter={counter} />
+      <Button onClick={increaseByOne} text="plus" />
+      <Button onClick={setToZero} text="zero" />
+      <Button onClick={decreaseByOne} text="minus" />
     </div>
   );
 };
-
 export default App;
