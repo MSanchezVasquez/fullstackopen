@@ -11,7 +11,6 @@ const App = () => {
     const exists = persons.some(
       (person) => person.name.toLowerCase() === trimmedName.toLowerCase()
     );
-    console.log(exists);
 
     if (exists) {
       alert(`${newName} is already added to phonebook`);
