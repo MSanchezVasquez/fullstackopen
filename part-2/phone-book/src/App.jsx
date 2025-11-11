@@ -1,77 +1,112 @@
 import { useState } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
+import { useEffect } from "react";
+import personService from "./services/persons";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [textFilter, setTextFilter] = useState("");
+
+  useEffect(() => {
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
+    });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmedName = newName.trim();
     const trimmedNumber = newNumber.trim();
     if (!trimmedName) return alert("Please enter a valid name");
-    const existsName = persons.some(
-      (person) => person.name.toLowerCase() === trimmedName.toLowerCase()
-    );
-    const existsNumber = persons.some(
-      (person) => person.number === trimmedNumber
+
+    const personExists = persons.find(
+      (p) => p.name.toLowerCase() === trimmedName.toLowerCase()
     );
 
-    if (existsName) {
-      alert(`${newName} is already added to phonebook`);
-    } else if (existsNumber) {
-      alert(`${newNumber} is already added to phonebook`);
-    } else {
-      setPersons(persons.concat({ name: newName, number: newNumber }));
+    const numberExists = persons.some((p) => p.number === trimmedNumber);
+
+    // Caso 1: el nombre ya existe → Proponer actualización (PUT)
+    if (personExists) {
+      const confirmUpdate = window.confirm(
+        `${trimmedName} is already added to phonebook, replace the old number with the new one?`
+      );
+
+      if (confirmUpdate) {
+        const updatedPerson = {
+          ...personExists,
+          number: trimmedNumber, // ✅ aquí incluimos el nuevo número
+        };
+
+        personService
+          .updatePhone(personExists.id, updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((p) =>
+                p.id !== personExists.id ? p : returnedPerson
+              )
+            );
+            setNewName("");
+            setNewNumber("");
+          });
+
+        return;
+      }
+
+      return; // si cancela la confirmación, no continúa
     }
-  };
 
-  const handleNameChange = (e) => setNewName(e.target.value);
-  const handleNumberChange = (e) => setNewNumber(e.target.value);
-  const handleTextFilterChange = (e) => setTextFilter(e.target.value);
+    // Caso 2: número ya existe (pero el nombre no)
+    if (numberExists) {
+      alert(`${trimmedNumber} is already added to phonebook`);
+      return;
+    }
+
+    // Caso 3: ni nombre ni número existen → crear nuevo registro
+    personService
+      .create({ name: trimmedName, number: trimmedNumber })
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewNumber("");
+      });
+  };
 
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(textFilter.toLowerCase())
   );
 
-  console.log(filteredPersons);
-
+  const deletePerson = (id) => {
+    const response = window.confirm(
+      "Are you sure you want to delete this person?"
+    );
+    if (response) {
+      personService.deletePerson(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
+  };
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with{" "}
-        <input
-          type="text"
-          value={textFilter}
-          onChange={handleTextFilterChange}
-        />
-      </div>
+      <Filter
+        textFilter={textFilter}
+        handleTextFilterChange={(e) => setTextFilter(e.target.value)}
+      />
       <h3>Add a new</h3>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        handleSubmit={handleSubmit}
+        newName={newName}
+        newNumber={newNumber}
+        setNewName={setNewName}
+        setNewNumber={setNewNumber}
+      />
       <h2>Numbers</h2>
 
-      {filteredPersons.map((person) => (
-        <p key={person.name}>
-          {person.name} {person.number}
-        </p>
-      ))}
+      <Persons filteredPersons={filteredPersons} deletePerson={deletePerson} />
     </div>
   );
 };
