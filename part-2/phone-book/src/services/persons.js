@@ -13,7 +13,11 @@ const create = (newPerson) => {
 
 const updatePhone = (id, updatePerson) => {
   const request = axios.put(`${baseUrl}/${id}`, updatePerson);
-  return request.then((response) => response.data);
+  return request
+    .then((response) => response.data)
+    .catch((error) => {
+      throw error;
+    });
 };
 
 const deletePerson = (id) => {

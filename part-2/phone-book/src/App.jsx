@@ -53,6 +53,11 @@ const App = () => {
             );
             setNewName("");
             setNewNumber("");
+          })
+          .catch((error) => {
+            setErrorMessage(
+              `Information of ${trimmedName} has already been removed from server`
+            );
           });
         setErrorMessage(`Updated ${trimmedName}'s number`);
         setTimeout(() => {

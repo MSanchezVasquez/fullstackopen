@@ -2,33 +2,8 @@
   "persons": [
     {
       "name": "Ada Lovelace",
-      "number": "976333333333",
+      "number": "4444444444",
       "id": "2"
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": "3"
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": "4"
-    },
-    {
-      "id": "368b",
-      "name": "Moschino",
-      "number": "7444444444444"
-    },
-    {
-      "id": "7be0",
-      "name": "teeeeeeeee",
-      "number": "7845144444444"
-    },
-    {
-      "id": "271e",
-      "name": "juana",
-      "number": "46644646"
     }
   ]
 }
