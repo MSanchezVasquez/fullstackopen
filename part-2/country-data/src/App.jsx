@@ -36,12 +36,28 @@ function App() {
           <p>Too many matches, specify another filter</p>
         )}
         {countrieName &&
-          filteredCountries.length > 0 &&
+          filteredCountries.length > 1 &&
           filteredCountries.length <= 10 &&
           filteredCountries.map((c) => <li key={c.cca2}>{c.name.common}</li>)}
 
-        {filteredCountries.length === 1 &&
-          filteredCountries.map((c) => <li key={c.cca2}>{c.name.common}</li>)}
+        {filteredCountries.length === 1 && (
+          <>
+            <h1>{filteredCountries[0].name.common}</h1>
+            <p>Capital {filteredCountries[0].capital}</p>
+            <p>Area {filteredCountries[0].area}</p>
+            <h2>Languages</h2>
+            <ul>
+              {Object.values(filteredCountries[0].languages).map((lang) => (
+                <li key={lang}>{lang}</li>
+              ))}
+            </ul>
+            <img
+              src={filteredCountries[0].flags.png}
+              width={250}
+              height={200}
+            />
+          </>
+        )}
       </div>
     </>
   );
