@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import countrieService from "./services/countries";
 
 import "./App.css";
+import CountryDetail from "./components/CountryDetail";
 
 function App() {
   const [countrieName, setCountrieName] = useState("");
@@ -82,67 +83,13 @@ function App() {
 
         {filteredCountries.length === 1 && (
           <>
-            <h1>{filteredCountries[0].name.common}</h1>
-            <p>Capital {filteredCountries[0].capital}</p>
-            <p>Area {filteredCountries[0].area}</p>
-            <h2>Languages</h2>
-            <ul>
-              {Object.values(filteredCountries[0].languages).map((lang) => (
-                <li key={lang}>{lang}</li>
-              ))}
-            </ul>
-            <img
-              src={filteredCountries[0].flags.png}
-              width={250}
-              height={200}
-            />
-
-            <h2>Weather in {filteredCountries[0].capital}</h2>
-
-            {weather ? (
-              <div>
-                <p>Temperature: {weather.main.temp} °C</p>
-                <p>Wind: {weather.wind.speed} m/s</p>
-                <img
-                  src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                  alt="weather icon"
-                />
-              </div>
-            ) : (
-              <p>Loading weather...</p>
-            )}
+            <CountryDetail country={filteredCountries[0]} weather={weather} />
           </>
         )}
 
         {selectedCountry && filteredCountries.length > 1 && (
           <>
-            <h1>{selectedCountry.name.common}</h1>
-            <p>Capital: {selectedCountry.capital}</p>
-            <p>Area: {selectedCountry.area}</p>
-
-            <h2>Languages</h2>
-            <ul>
-              {Object.values(selectedCountry.languages).map((lang) => (
-                <li key={lang}>{lang}</li>
-              ))}
-            </ul>
-
-            <img src={selectedCountry.flags.png} width={250} height={200} />
-
-            <h2>Weather in {selectedCountry.capital}</h2>
-
-            {weather ? (
-              <div>
-                <p>Temperature: {weather.main.temp} °C</p>
-                <p>Wind: {weather.wind.speed} m/s</p>
-                <img
-                  src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                  alt="weather icon"
-                />
-              </div>
-            ) : (
-              <p>Loading weather...</p>
-            )}
+            <CountryDetail country={selectedCountry} weather={weather} />
           </>
         )}
       </div>
