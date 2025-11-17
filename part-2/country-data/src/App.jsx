@@ -6,6 +6,7 @@ import "./App.css";
 function App() {
   const [countrieName, setCountrieName] = useState("");
   const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
     countrieService.getAll().then((response) => {
@@ -17,6 +18,10 @@ function App() {
     c.name.common.toLowerCase().includes(countrieName.toLowerCase())
   );
 
+  const onCountrieShow = (country) => {
+    setSelectedCountry(country);
+  };
+
   return (
     <>
       <div>
@@ -27,6 +32,7 @@ function App() {
             value={countrieName}
             onChange={(e) => {
               setCountrieName(e.target.value);
+              setSelectedCountry(null);
             }}
           />
         </label>
@@ -38,7 +44,15 @@ function App() {
         {countrieName &&
           filteredCountries.length > 1 &&
           filteredCountries.length <= 10 &&
-          filteredCountries.map((c) => <li key={c.cca2}>{c.name.common}</li>)}
+          filteredCountries.map((c) => (
+            <>
+              <div style={{ display: "flex", gap: "5px", marginBottom: "4px" }}>
+                {" "}
+                <li key={c.cca3}>{c.name.common}</li>
+                <button onClick={() => onCountrieShow(c)}>Show</button>
+              </div>
+            </>
+          ))}
 
         {filteredCountries.length === 1 && (
           <>
@@ -56,6 +70,23 @@ function App() {
               width={250}
               height={200}
             />
+          </>
+        )}
+
+        {selectedCountry && filteredCountries.length > 1 && (
+          <>
+            <h1>{selectedCountry.name.common}</h1>
+            <p>Capital: {selectedCountry.capital}</p>
+            <p>Area: {selectedCountry.area}</p>
+
+            <h2>Languages</h2>
+            <ul>
+              {Object.values(selectedCountry.languages).map((lang) => (
+                <li key={lang}>{lang}</li>
+              ))}
+            </ul>
+
+            <img src={selectedCountry.flags.png} width={250} height={200} />
           </>
         )}
       </div>
