@@ -7,6 +7,9 @@ function App() {
   const [countrieName, setCountrieName] = useState("");
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [weather, setWeather] = useState(null);
+
+  const apiKey = import.meta.env.VITE_WEATHER_KEY;
 
   useEffect(() => {
     countrieService.getAll().then((response) => {
@@ -21,6 +24,29 @@ function App() {
   const onCountrieShow = (country) => {
     setSelectedCountry(country);
   };
+
+  useEffect(() => {
+    const country =
+      selectedCountry ||
+      (filteredCountries.length === 1 ? filteredCountries[0] : null);
+
+    if (!country) {
+      setWeather(null);
+      return;
+    }
+
+    const capital = country.capital[0];
+    const [lat, lon] = country.capitalInfo.latlng;
+
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setWeather(data);
+      })
+      .catch(() => setWeather(null));
+  }, [selectedCountry, filteredCountries]);
 
   return (
     <>
@@ -70,6 +96,21 @@ function App() {
               width={250}
               height={200}
             />
+
+            <h2>Weather in {filteredCountries[0].capital}</h2>
+
+            {weather ? (
+              <div>
+                <p>Temperature: {weather.main.temp} °C</p>
+                <p>Wind: {weather.wind.speed} m/s</p>
+                <img
+                  src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                  alt="weather icon"
+                />
+              </div>
+            ) : (
+              <p>Loading weather...</p>
+            )}
           </>
         )}
 
@@ -87,6 +128,21 @@ function App() {
             </ul>
 
             <img src={selectedCountry.flags.png} width={250} height={200} />
+
+            <h2>Weather in {selectedCountry.capital}</h2>
+
+            {weather ? (
+              <div>
+                <p>Temperature: {weather.main.temp} °C</p>
+                <p>Wind: {weather.wind.speed} m/s</p>
+                <img
+                  src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                  alt="weather icon"
+                />
+              </div>
+            ) : (
+              <p>Loading weather...</p>
+            )}
           </>
         )}
       </div>
