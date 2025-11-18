@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import countrieService from "./services/countries";
+import weatherService from "./services/weather";
 
 import "./App.css";
 import CountryDetail from "./components/CountryDetail";
@@ -39,10 +40,8 @@ function App() {
     const capital = country.capital[0];
     const [lat, lon] = country.capitalInfo.latlng;
 
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-    )
-      .then((res) => res.json())
+    weatherService
+      .getWeatherByCountry(lat, lon, apiKey)
       .then((data) => {
         setWeather(data);
       })
