@@ -1,3 +1,6 @@
 [submodule "part-3/phone-book"]
 	path = part-3/phone-book
 	url = https://github.com/MSanchezVasquez/phone-book.git
+[submodule "part-3/notes-backend"]
+	path = part-3/notes-backend
+	url = https://github.com/MSanchezVasquez/notes-backend.git
