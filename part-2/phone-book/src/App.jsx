@@ -40,7 +40,7 @@ const App = () => {
       if (confirmUpdate) {
         const updatedPerson = {
           ...personExists,
-          number: trimmedNumber, // ✅ aquí incluimos el nuevo número
+          number: trimmedNumber,
         };
 
         personService
@@ -80,13 +80,21 @@ const App = () => {
       .create({ name: trimmedName, number: trimmedNumber })
       .then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
+        setErrorMessage(`Added ${returnedPerson.name}`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
         setNewName("");
         setNewNumber("");
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+
+        setErrorMessage(error.response.data.error);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
       });
-    setErrorMessage(`Added ${trimmedName}`);
-    setTimeout(() => {
-      setErrorMessage(null);
-    }, 5000);
   };
 
   const filteredPersons = persons.filter((person) =>
