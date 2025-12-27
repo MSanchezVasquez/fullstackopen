@@ -4,3 +4,6 @@
 [submodule "part-3/notes-backend"]
 	path = part-3/notes-backend
 	url = https://github.com/MSanchezVasquez/notes-backend.git
+[submodule "part-4/blog-list-backend"]
+	path = part-4/blog-list-backend
+	url = https://github.com/MSanchezVasquez/blog-list-backend.git
