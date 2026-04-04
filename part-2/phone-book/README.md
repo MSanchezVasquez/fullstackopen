@@ -1,16 +1,47 @@
-# React + Vite
+# Phone Book
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend de React para una agenda telefónica con backend local usando `json-server`.
 
-Currently, two official plugins are available:
+## Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Este proyecto permite gestionar una lista de personas y sus números de teléfono. Incluye:
 
-## React Compiler
+- Visualización de la lista completa de contactos.
+- Creación de nuevos contactos.
+- Filtrado de contactos por nombre.
+- Manejo de alertas y mensajes básicos.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Configuración
 
-## Expanding the ESLint configuration
+Instala las dependencias con:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+```
+
+## Comandos
+
+- Iniciar el servidor de datos local:
+  ```bash
+  npm run server
+  ```
+- Iniciar la aplicación React:
+  ```bash
+  npm run dev
+  ```
+- Ver la aplicación en producción previa:
+  ```bash
+  npm run preview
+  ```
+
+## Uso
+
+1. Ejecuta `npm install`.
+2. Abre una terminal y lanza `npm run server`.
+3. En otra terminal, ejecuta `npm run dev`.
+4. Abre la URL que indique Vite en el navegador.
+5. Añade nuevos contactos, filtra por nombre y revisa los datos en `db.json`.
+
+## Nota
+
+El backend local usa `json-server` y expone los datos en `http://localhost:3001/persons`.

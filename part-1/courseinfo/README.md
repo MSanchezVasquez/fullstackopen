@@ -1,8 +1,24 @@
-# React + Vite
+# Course Information
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyecto de React que muestra información sobre cursos y sus partes.
 
-Currently, two official plugins are available:
+## Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Este ejercicio demuestra cómo organizar componentes y props en React. Incluye:
+
+- Un componente principal que recibe datos de cursos.
+- Componentes hijos para mostrar el nombre del curso y los ejercicios.
+- Cálculo dinámico del total de ejercicios.
+
+## Comandos
+
+```bash
+npm install
+npm run dev
+```
+
+## Uso
+
+1. Ejecuta `npm install`.
+2. Ejecuta `npm run dev`.
+3. Abre el servidor Vite en el navegador.

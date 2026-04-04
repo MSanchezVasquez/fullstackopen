@@ -1,16 +1,24 @@
-# React + Vite
+# Country Data
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación de React para buscar países y ver sus datos usando una API externa.
 
-Currently, two official plugins are available:
+## Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Este proyecto usa `axios` para obtener datos de países y muestra:
 
-## React Compiler
+- Búsqueda de países por nombre.
+- Lista de resultados que coinciden con la búsqueda.
+- Detalles del país seleccionado, como capital, población y bandera.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Comandos
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Uso
+
+1. Instala las dependencias con `npm install`.
+2. Ejecuta `npm run dev`.
+3. Busca un país en el campo de texto para ver los resultados.
