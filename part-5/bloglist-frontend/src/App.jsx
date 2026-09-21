@@ -87,9 +87,19 @@ const App = () => {
 
   const addLike = async (id, blogObject) => {
     try {
-      const updateBlog = await blogService.update(id, blogObject);
+      const returnedBlog = await blogService.update(id, blogObject);
+
+      const originalBlog = blogs.find((b) => b.id === id);
       // Actualizamos el estado reemplazando el blog viejo con el nuevo
-      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : updateBlog)));
+
+      const updatedBlogWithUser = {
+        ...returnedBlog,
+        user: originalBlog.user,
+      };
+
+      setBlogs(
+        blogs.map((blog) => (blog.id !== id ? blog : updatedBlogWithUser)),
+      );
     } catch (error) {
       console.error("Error al dar like:", error);
     }
