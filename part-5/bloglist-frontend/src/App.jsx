@@ -90,7 +90,6 @@ const App = () => {
       const returnedBlog = await blogService.update(id, blogObject);
 
       const originalBlog = blogs.find((b) => b.id === id);
-      // Actualizamos el estado reemplazando el blog viejo con el nuevo
 
       const updatedBlogWithUser = {
         ...returnedBlog,
@@ -147,9 +146,11 @@ const App = () => {
       </Togglable>
 
       {/* LISTA DE BLOGS */}
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} addLike={addLike} />
-      ))}
+      {[...blogs]
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog) => (
+          <Blog key={blog.id} blog={blog} addLike={addLike} />
+        ))}
     </div>
   );
 };
