@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
   const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
 
   const handleLike = () => {
     const updateBlog = {
@@ -21,20 +21,20 @@ const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
       author: blog.author,
       url: blog.url,
       likes: blog.likes + 1,
-      user: blog.user ? blog.user.id : "",
-    };
+      user: blog.user ? blog.user.id : '',
+    }
 
-    addLike(blog.id, updateBlog);
-  };
+    addLike(blog.id, updateBlog)
+  }
 
-  const showRemoveButton = blog.user?.username === currentUser.username;
+  const showRemoveButton = blog.user?.username === currentUser.username
 
   return (
     <div style={blogStyle}>
       <div>
         {blog.title} {blog.author}
         <button onClick={toggleVisibility} style={{ marginLeft: 5 }}>
-          {visible ? "hide" : "view"}
+          {visible ? 'hide' : 'view'}
         </button>
       </div>
 
@@ -47,14 +47,14 @@ const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
               like
             </button>
           </div>
-          <div>{blog.user ? blog.user.name : "Unknown User"}</div>
+          <div>{blog.user ? blog.user.name : 'Unknown User'}</div>
 
           {showRemoveButton && (
             <button
               onClick={() => removeBlog(blog)}
               style={{
-                backgroundColor: "#008CBA",
-                color: "white",
+                backgroundColor: '#008CBA',
+                color: 'white',
                 marginTop: 5,
               }}
             >
@@ -64,7 +64,7 @@ const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
