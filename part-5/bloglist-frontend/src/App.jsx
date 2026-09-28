@@ -104,6 +104,33 @@ const App = () => {
     }
   };
 
+  const removeBlog = async (blogToDelete) => {
+    if (
+      window.confirm(
+        `Remove blog${blogToDelete.title} by ${blogToDelete.author}`,
+      )
+    ) {
+      try {
+        await blogService.remove(blogToDelete.id);
+
+        setBlogs(blogs.filter((blog) => blog.id !== blogToDelete.id));
+
+        setMessage(`Blog ${blogToDelete.title} removed successfully`);
+        setMessageType("success");
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+      } catch (error) {
+        console.error("Error al eliminar:", error);
+        setMessage("Error removing blog");
+        setMessageType("error");
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+      }
+    }
+  };
+
   if (user === null) {
     return (
       <div>
@@ -149,7 +176,13 @@ const App = () => {
       {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <Blog key={blog.id} blog={blog} addLike={addLike} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            addLike={addLike}
+            removeBlog={removeBlog}
+            currentUser={user}
+          />
         ))}
     </div>
   );
