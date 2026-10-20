@@ -38,6 +38,6 @@ describe('<Togglable />', () => {
     await user.click(closeButton)
 
     const element = screen.getByText('togglable content')
-    expect(element).toBeVisible()
+    expect(element).not.toBeVisible()
   })
 });
