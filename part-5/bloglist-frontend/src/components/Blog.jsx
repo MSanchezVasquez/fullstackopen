@@ -27,10 +27,10 @@ const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
     addLike(blog.id, updateBlog)
   }
 
-  const showRemoveButton = blog.user?.username === currentUser.username
+  const showRemoveButton = blog.user?.username === currentUser?.username
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <div>
         {blog.title} {blog.author}
         <button onClick={toggleVisibility} style={{ marginLeft: 5 }}>
