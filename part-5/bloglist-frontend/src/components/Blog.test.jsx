@@ -50,4 +50,38 @@ describe('<Blog />', () => {
     const likesElement = screen.getByText('likes 5')
     expect(likesElement).toBeDefined()
   })
+
+  test('if the like button is clicked twice, the event handler is called twice', async () => {
+    const blog = {
+      title: 'Component testing is done with react-testing-library',
+      author: 'Matti Luukkainen',
+      url: 'https://fullstackopen.com/',
+      likes: 5,
+      user: {
+        username: 'mluukkai',
+        name: 'Matti Luukkainen',
+      },
+    }
+
+    const mockHandler = vi.fn()
+
+    render(
+      <Blog
+        blog={blog}
+        addLike={mockHandler}
+        currentUser={{ username: 'mluukkai' }}
+      />,
+    )
+
+    const user = userEvent.setup()
+
+    const viewButton = screen.getByText('view')
+    await user.click(viewButton)
+
+    const likeButton = screen.getByText('like')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+  })
 })
