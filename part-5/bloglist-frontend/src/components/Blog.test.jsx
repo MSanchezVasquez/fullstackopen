@@ -10,17 +10,17 @@ describe('<Blog />', () => {
       likes: 10
     }
 
-    const { container } = render(<Blog blog={blog} />);
+    const { container } = render(<Blog blog={blog} />)
 
     const div = container.querySelector('.blog')
     console.log(div)
     expect(div).toHaveTextContent('Testing React Components')
-    expect(div).toHaveTextContent('John Doe');
+    expect(div).toHaveTextContent('John Doe')
 
     const url = screen.queryByText('https://testing-library.com/')
     expect(url).toBeNull()
 
-    const likes = screen.queryByText('likes 10');
+    const likes = screen.queryByText('likes 10')
     expect(likes).toBeNull()
   })
 })
