@@ -30,7 +30,7 @@ const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
   const showRemoveButton = blog.user?.username === currentUser?.username
 
   return (
-    <div style={blogStyle} className='blog'>
+    <div style={blogStyle} className="blog" data-testid="blog">
       <div>
         {blog.title} {blog.author}
         <button onClick={toggleVisibility} style={{ marginLeft: 5 }}>
@@ -64,7 +64,7 @@ const Blog = ({ blog, addLike, removeBlog, currentUser }) => {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export default Blog

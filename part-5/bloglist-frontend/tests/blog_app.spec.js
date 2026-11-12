@@ -71,5 +71,24 @@ test.describe('Blog app', () => {
         page.getByText('Playwright E2E Testing Moises Sanchez'),
       ).toBeVisible()
     })
+
+    test('a blog can be liked', async ({ page }) => {
+      await page.getByRole('button', { name: 'create new blog' }).click()
+      await page.locator('input[name="Title"]').fill('Blog to be liked')
+      await page.locator('input[name="Author"]').fill('Moises Sanchez')
+      await page
+        .locator('input[name="Url"]')
+        .fill('https://fullstackopen.com/')
+      await page.getByRole('button', { name: 'create' }).click()
+
+      const blog = page
+        .getByTestId('blog')
+        .filter({ hasText: 'Blog to be liked' })
+
+      await blog.getByRole('button', { name: 'view' }).click()
+      await expect(page.getByText('likes 0')).toBeVisible()
+      await page.getByRole('button', { name: 'like' }).click()
+      await expect(page.getByText('likes 1')).toBeVisible()
+    })
   })
 })
