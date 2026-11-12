@@ -90,5 +90,36 @@ test.describe('Blog app', () => {
       await page.getByRole('button', { name: 'like' }).click()
       await expect(page.getByText('likes 1')).toBeVisible()
     })
+
+    test('a blog can be deleted by the user who created it', async ({
+      page,
+    }) => {
+      // 1. Creamos un blog para asegurarnos de que existe y somos los creadores
+      await page.getByRole('button', { name: 'create new blog' }).click()
+      await page.locator('input[name="Title"]').fill('Blog to be deleted')
+      await page.locator('input[name="Author"]').fill('Moises Sanchez')
+      await page
+        .locator('input[name="Url"]')
+        .fill('https://fullstackopen.com/')
+      page.on('console', (msg) => {
+        console.log('BROWSER:', msg.text())
+      })
+      await page.getByRole('button', { name: 'create' }).click()
+
+      const blog = page
+        .getByTestId('blog')
+        .filter({ hasText: 'Blog to be deleted' })
+
+      await blog.getByRole('button', { name: 'view' }).click()
+
+      // 3. Interceptamos y aceptamos automáticamente el diálogo window.confirm
+      page.once('dialog', (dialog) => dialog.accept())
+
+      // 4. Hacemos clic en el botón de eliminar (ajusta el nombre si en tu app se llama 'remove', 'delete' o 'eliminar')
+      await blog.getByRole('button', { name: 'remove' }).click()
+
+      // 5. Verificamos que el blog haya desaparecido de la interfaz
+      await expect(blog.getByText('Blog to be deleted')).not.toBeVisible()
+    })
   })
 })

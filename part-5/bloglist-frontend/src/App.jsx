@@ -67,11 +67,16 @@ const App = () => {
 
   const addBlog = async (blogObject) => {
     try {
-      blogFormRef.current.toggleVisibility()
-
       const returnedBlog = await blogService.create(blogObject)
 
-      setBlogs(blogs.concat(returnedBlog))
+      const blogWithUser = {
+        ...returnedBlog,
+        user: user,
+      }
+
+      setBlogs((prevBlogs) => prevBlogs.concat(blogWithUser))
+
+      blogFormRef.current.toggleVisibility()
       setMessage('Blog added successfully')
       setMessageType('success')
 
@@ -79,7 +84,7 @@ const App = () => {
         setMessage(null)
       }, 5000)
     } catch (error) {
-      console.error('Error al crear el blog:', error)
+      console.error('Error al crear el blog:', error.response?.data || error)
     }
   }
 
