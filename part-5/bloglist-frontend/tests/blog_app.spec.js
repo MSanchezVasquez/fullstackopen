@@ -117,6 +117,44 @@ test.describe('Blog app', () => {
 
       await expect(blog.getByText('Blog to be deleted')).not.toBeVisible()
     })
+
+    test('blogs are ordered by number of likes with the most liked blog first', async ({ page }) => {
+      await page.getByRole('button', { name: 'create new blog' }).click()
+      await page.locator('input[name="Title"]').fill('First Blog - Less Likes')
+      await page.locator('input[name="Author"]').fill('Moises Sanchez')
+      await page
+        .locator('input[name="Url"]')
+        .fill('https://fullstackopen.com/1')
+      await page.getByRole('button', { name: 'create' }).click()
+      await expect(page.getByText('First Blog - Less Likes')).toBeVisible()
+
+      await page.getByRole('button', { name: 'create new blog' }).click()
+      await page
+        .locator('input[name="Title"]')
+        .fill('Second Blog - More Likes')
+      await page.locator('input[name="Author"]').fill('Moises Sanchez')
+      await page
+        .locator('input[name="Url"]')
+        .fill('https://fullstackopen.com/2')
+      await page.getByRole('button', { name: 'create' }).click()
+      await expect(page.getByText('Second Blog - More Likes')).toBeVisible()
+
+      const viewButtons = page.getByRole('button', { name: 'view' })
+
+      await viewButtons.nth(1).click()
+      await page.getByRole('button', { name: 'like' }).click()
+
+      await expect(page.getByText('likes 1')).toBeVisible()
+
+      await page.getByRole('button', { name: 'like' }).click()
+      await expect(page.getByText('likes 2')).toBeVisible()
+
+      const blogElements = page.locator('.blog')
+
+      await expect(blogElements.first()).toContainText(
+        'Second Blog - More Likes',
+      )
+    })
   })
 
   test.describe('When another user is logged in', () => {
