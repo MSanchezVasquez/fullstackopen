@@ -47,4 +47,29 @@ test.describe('Blog app', () => {
       await expect(page.getByText('Log in to application')).toBeVisible()
     })
   })
+
+  test.describe('When logged in', () => {
+    test.beforeEach(async ({ page }) => {
+      await page.locator('input[name="Username"]').fill('testuser')
+      await page.locator('input[name="Password"]').fill('sekretpassword')
+      await page.getByRole('button', { name: 'login' }).click()
+
+      // Nos aseguramos de que el login fue exitoso
+      await expect(page.getByText('Test User logged in')).toBeVisible()
+    })
+
+    test('a new blog can be created', async ({ page }) => {
+      await page.getByRole('button', { name: 'create new blog' }).click()
+
+      await page.locator('input[name="Title"]').fill('Playwright E2E Testing')
+      await page.locator('input[name="Author"]').fill('Moises Sanchez')
+      await page.locator('input[name="Url"]').fill('https://playwright.dev/')
+
+      await page.getByRole('button', { name: 'create' }).click()
+
+      await expect(
+        page.getByText('Playwright E2E Testing Moises Sanchez'),
+      ).toBeVisible()
+    })
+  })
 })
