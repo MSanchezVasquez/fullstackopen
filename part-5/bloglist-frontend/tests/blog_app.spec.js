@@ -94,7 +94,6 @@ test.describe('Blog app', () => {
     test('a blog can be deleted by the user who created it', async ({
       page,
     }) => {
-      // 1. Creamos un blog para asegurarnos de que existe y somos los creadores
       await page.getByRole('button', { name: 'create new blog' }).click()
       await page.locator('input[name="Title"]').fill('Blog to be deleted')
       await page.locator('input[name="Author"]').fill('Moises Sanchez')
@@ -112,14 +111,55 @@ test.describe('Blog app', () => {
 
       await blog.getByRole('button', { name: 'view' }).click()
 
-      // 3. Interceptamos y aceptamos automáticamente el diálogo window.confirm
       page.once('dialog', (dialog) => dialog.accept())
 
-      // 4. Hacemos clic en el botón de eliminar (ajusta el nombre si en tu app se llama 'remove', 'delete' o 'eliminar')
       await blog.getByRole('button', { name: 'remove' }).click()
 
-      // 5. Verificamos que el blog haya desaparecido de la interfaz
       await expect(blog.getByText('Blog to be deleted')).not.toBeVisible()
+    })
+  })
+
+  test.describe('When another user is logged in', () => {
+    test.beforeEach(async ({ page, request }) => {
+      const secondUser = {
+        username: 'otheruser',
+        name: 'Other User',
+        password: 'otherpassword',
+      }
+      await request.post('http://localhost:3001/api/users', {
+        data: secondUser,
+      })
+    })
+
+    test('a blog can only be seen and deleted by its creator', async ({
+      page,
+    }) => {
+      await page.locator('input[name="Username"]').fill('testuser')
+      await page.locator('input[name="Password"]').fill('sekretpassword')
+      await page.getByRole('button', { name: 'login' }).click()
+      await expect(page.getByText('Test User logged in')).toBeVisible()
+
+      await page.getByRole('button', { name: 'create new blog' }).click()
+      await page.locator('input[name="Title"]').fill('Blog by creator only')
+      await page.locator('input[name="Author"]').fill('Moises Sanchez')
+      await page
+        .locator('input[name="Url"]')
+        .fill('https://fullstackopen.com/')
+      await page.getByRole('button', { name: 'create' }).click()
+      await expect(page.getByText('Blog by creator only')).toBeVisible()
+
+      await page.getByRole('button', { name: 'logout' }).click()
+      await expect(page.getByText('Log in to application')).toBeVisible()
+
+      await page.locator('input[name="Username"]').fill('otheruser')
+      await page.locator('input[name="Password"]').fill('otherpassword')
+      await page.getByRole('button', { name: 'login' }).click()
+      await expect(page.getByText('Other User logged in')).toBeVisible()
+
+      await page.getByRole('button', { name: 'view' }).click()
+
+      const removeButton = page.getByRole('button', { name: 'remove' })
+      await expect(removeButton).not.toBeVisible()
     })
   })
 })
